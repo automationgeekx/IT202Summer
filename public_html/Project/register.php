@@ -1,5 +1,6 @@
 <?php
     require(__DIR__ . "/../../partials/nav.php");
+    require(__DIR__ . "/../../lib/functions.php");
 ?>
 
 <form onsubmit="return validate(this)" method="POST">

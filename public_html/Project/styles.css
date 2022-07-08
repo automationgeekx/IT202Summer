@@ -11,13 +11,13 @@
 }
 
 .alert-info {
-    background-color: teal;
+    background-color: tan;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
+nav li{display: inline; background-color: rgb(255, 255, 255);}
+nav li a{color: rgb(111, 0, 255)}
 input{border-radius: 50%;}
 body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
+    background-color: rgb(228, 228, 228);
+    color: rgb(0, 4, 255);
 
 }

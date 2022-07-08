@@ -1,5 +1,6 @@
 .alert-success {
-    background-color: green
+    color: lightblue;
+    background-color: white;
 }
 
 .alert-warning {
@@ -11,13 +12,13 @@
 }
 
 .alert-info {
-    background-color: teal;
+    background-color: tan;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
+nav li{display: inline; background-color: rgba(218, 218, 218, 0.5);}
+nav li a{color: rgb(0, 38, 255)}
 input{border-radius: 50%;}
 body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 4, 255);
 
 }

@@ -12,8 +12,6 @@
         // Your score
         var score = 0;
 
-        var scoreCompare = 0;
-
         // Properties for your square
         var x = 50; // X position
         var y = 100; // Y position
@@ -31,7 +29,7 @@
         var targetY = 0;
         var targetLength = 25;
 
-        // Properties for the other target square
+        // Properties for the other target square bg339 7/10/2022
         var otherTargetX = 100;
         var otherTargetY = 235;
         var otherTargetLength = 10;
@@ -129,7 +127,7 @@
         targetY = Math.round(Math.random() * canvas.height - targetLength)
         }
 
-        // Move the other target
+        // Move the other target bg339 7/10/2022
         function moveOtherTarget() {
         otherTargetX = Math.round(Math.random() * canvas.width - otherTargetLength);
         otherTargetY = Math.round(Math.random() * canvas.height - otherTargetLength)
@@ -178,13 +176,13 @@
                 // Respawn the target
                 moveTarget();
                 moveOtherTarget();
-                // Increase the size of the square
+                // Increase the size of the square bg339 7/10/2022
                 sideLength += 2;
                 // Increase the score
                 score++;
             }
         }
-
+        // if statement to check if it hit other target bg339 7/10/2022
         if (isWithin(otherTargetX, x, x + sideLength) || isWithin(otherTargetX + otherTargetLength, x, x + sideLength))
         { // X
             if (isWithin(otherTargetY, y, y + sideLength) || isWithin(otherTargetY + otherTargetLength, y, y + sideLength))
@@ -192,9 +190,9 @@
                 // Respawn the target
                 moveTarget();
                 moveOtherTarget();
-                // Increase the size of the square even more when hitting other target
+                // Increase the size of the square even more when hitting other target bg339 7/10/2022
                 sideLength += 4;
-                // Increase the score by 2 when hitting other square
+                // Increase the score by 2 when hitting other square bg339 7/10/2022
                 score+=2;
             }
         }
@@ -207,7 +205,7 @@
         context.fillStyle = '#00FF00';
         context.fillRect(targetX, targetY, targetLength, targetLength);
 
-        // Draw the other target 
+        // bg339 7/10/2022 Draw the other target 
         context.fillStyle = '#FFFF00';
         context.fillRect(otherTargetX, otherTargetY, otherTargetLength, otherTargetLength);
 

@@ -84,7 +84,7 @@ if (is_logged_in(true)) {
                     $stmt->execute([":uid" => get_user_id()]);
                     $result = $stmt->fetch(PDO::FETCH_ASSOC);
                     $user_id = get_user_id(); // caching a reference
-                    $account_type = se($_POST, "acc_type", "", false);
+                    $account_type = se($_POST, "account_type", "", false);
                     $deposit = se($_POST, "deposit", "", false);
                     $query = "INSERT INTO Accounts (account_type, user_id) VALUES (:at, :uid)";
                     $stmt = $db->prepare($query);

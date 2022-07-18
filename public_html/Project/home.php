@@ -6,9 +6,9 @@ require(__DIR__ . "/../../partials/nav.php");
 <h1>Home</h1>
 <div class="list-group">
   <a href="create_account.php" class="list-group-item list-group-item-action">Create Account</a>
-  <a href="#" class="list-group-item list-group-item-action">My Accounts</a>
-  <a href="#" class="list-group-item list-group-item-action">Deposit</a>
-  <a href="#" class="list-group-item list-group-item-action">Withdraw</a>
+  <a href="list_accounts.php" class="list-group-item list-group-item-action">My Accounts</a>
+  <a href="deposit.php" class="list-group-item list-group-item-action">Deposit</a>
+  <a href="withdraw.php" class="list-group-item list-group-item-action">Withdraw</a>
   <a href="#" class="list-group-item list-group-item-action">Transfer</a>
   <a href="profile.php" class="list-group-item list-group-item-action">Profile</a>
 </div>

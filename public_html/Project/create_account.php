@@ -13,7 +13,13 @@ if (is_logged_in(true)) {
     <form onsubmit="return validate(this)" method="POST">
         <div class="mb-3">
             <label class="form-label" for="account_type">Account Type</label>
-            <input class="form-control" type="text" id="acc_type" name="acc_type" required value="Checking" />
+            <select id="account_type" name="account_type" class="form-select">
+                <option>Checking</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="minimum_deposit">Minimum Deposit of $5 Required</label>
+            <input class="form-control" type="text" id="deposit" name="deposit" required value="5" />
         </div>
         <div class="mb-3">
             <label class="form-label" for="pw">Password</label>
@@ -23,7 +29,7 @@ if (is_logged_in(true)) {
             <label class="form-label" for="confirm">Confirm</label>
             <input class="form-control" type="password" name="confirm" required minlength="8" />
         </div>
-        <input type="submit" class="mt-3 btn btn-primary" value="Submit" />
+        <input type="submit" class="mt-3 btn btn-primary" value="Create" />
     </form>
 </div>
 <script>
@@ -39,7 +45,14 @@ if (is_logged_in(true)) {
     {
         $password = se($_POST, "password", "", false);
         $confirm = se($_POST, "confirm", "", false);
+        $deposit = se($_POST, "deposit", "", false);
         $hasError = false;
+
+        if ($deposit < 5) {
+            flash("Deposit requires a minimum of $5 for account to be created", "danger");
+            $hasError = true;
+        }
+
         if (empty($password)) {
             flash("password must not be empty", "danger");
             $hasError = true;
@@ -72,6 +85,7 @@ if (is_logged_in(true)) {
                     $result = $stmt->fetch(PDO::FETCH_ASSOC);
                     $user_id = get_user_id(); // caching a reference
                     $account_type = se($_POST, "acc_type", "", false);
+                    $deposit = se($_POST, "deposit", "", false);
                     $query = "INSERT INTO Accounts (account_type, user_id) VALUES (:at, :uid)";
                     $stmt = $db->prepare($query);
                     if (!$result) {
@@ -82,7 +96,10 @@ if (is_logged_in(true)) {
                             $account_number = generateRandomNumber(12);
                             $stmt = $db->prepare($query);
                             $stmt->execute([":an" => $account_number, ":at" => $account_type, ":uid" => $user_id]);
+                            $account["id"] = $db->lastInsertId();
                             flash("Welcome! Your account was created successfully", "success");
+                            makeInitDeposit($deposit, "Deposit", -1, $account["id"], "Initial Deposit when First Account Created");
+                            die(header("Location: list_accounts.php"));
                         } catch (PDOException $e) {
                             flash("An error occurred creating your account", "danger");
                             error_log(var_export($e, true));

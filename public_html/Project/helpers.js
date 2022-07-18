@@ -13,4 +13,27 @@ function flash(message = "", color = "info") {
     outerDiv.appendChild(innerDiv);
     //add the element to the DOM (if we don't it merely exists in memory)
     flash.appendChild(outerDiv);
+
+    clear();
 }
+
+let timeout = null;
+function clear () {
+    let flash = document.getElementById("flash");
+    if (!timeout && flash)
+    {
+        timeout = setTimeout(() => {
+            console.log("clearing");
+            if (flash.children.length > 0)
+            {
+                flash.children[0].remove();
+            }
+            timeout = null;
+            if (flash.children.length > 0)  {
+                clear();
+            }
+
+        }, 2500);
+    }
+}
+window.addEventListener("load", () => setTimeout(clear(), 100));

@@ -22,4 +22,26 @@ require(__DIR__ . "/duplicate_user_details.php");
 require(__DIR__ . "/reset_session.php");
 
 require(__DIR__ . "/get_url.php");
+
+require(__DIR__ . "/making_deposit.php");
+
+require(__DIR__ . "/account_helpers.php");
+
+require(__DIR__ . "/refresh_balance.php");
+
+require(__DIR__ . "/making_withdrawal.php");
+?>
+
+<?php
+function generateRandomNumber($accountLength)
+{
+    $num = '';
+
+    for($x = 0; $x < $accountLength; $x++)
+    {
+        $num .= mt_rand(0,9);
+    }
+
+    return $num;
+}
 ?>

@@ -46,7 +46,31 @@
   - https://bg339-prod.herokuapp.com/Project/profile.php
 
 - Milestone 2
-  - (duplicate template here for Milestone 1 features)
+    - [x] \(7/17/2022) Create the Accounts table (id, account_number [unique, always 12 characters], user_id, balance (default 0), account_type, created, modified)
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/sql/init_db.php](https://bg339-prod.herokuapp.com/Project/sql/init_db.php)
+    - [x] \(7/17/2022) Project setup steps
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/sql/init_db.php](https://bg339-prod.herokuapp.com/Project/sql/init_db.php)
+    - [x] \(7/17/2022) Create the Transactions table
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/sql/init_db.php](https://bg339-prod.herokuapp.com/Project/sql/init_db.php)
+    - [x] \(7/17/2022) Dashboard page
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/home.php](https://bg339-prod.herokuapp.com/Project/home.php)
+    - [x] \(7/17/2022) User will be able to create a checking account
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/create_account.php](https://bg339-prod.herokuapp.com/Project/create_account.php)
+    - [x] \(7/17/2022) User will be able to list their accounts
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/list_accounts.php](https://bg339-prod.herokuapp.com/Project/list_accounts.php)
+    - [x] \(7/17/2022) User will be able to click an account for more information (a.k.a Transaction History page)
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/transaction_history.php?id=1&acc_num=000000000001](https://bg339-prod.herokuapp.com/Project/transaction_history.php?id=7&acc_num=359760471668)
+    - [x] \(7/17/2022) User will be able to deposit/withdraw from their account(s)
+        -  [Milestone 2 Markdown](https://github.com/bg339/IT202Summer/blob/Milestone2/public_html/Project/milestone2.md)
+        -  [https://bg339-prod.herokuapp.com/Project/deposit.php](https://bg339-prod.herokuapp.com/Project/deposit.php)
+        -  [https://bg339-prod.herokuapp.com/Project/withdraw.php](https://bg339-prod.herokuapp.com/Project/withdraw.php)
 - Milestone 3
   - (duplicate template here for Milestone 1 features)
 - Milestone 4

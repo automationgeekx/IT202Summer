@@ -1,11 +1,12 @@
 <?php
 function get_specific_account_balance($account_number)
 {
-    $query = "SELECT balance from Accounts WHERE account_number = :an";
+    # changed parameter names for conciseness
+    $query = "SELECT balance from Accounts WHERE account_number = :accnum";
     $db = getDB();
     $stmt = $db->prepare($query);
     try {
-        $stmt->execute([":an" => $account_number]);
+        $stmt->execute([":accnum" => $account_number]);
         $r = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($r) {
             return (int)se($r, "balance", 0, false);
@@ -16,3 +17,6 @@ function get_specific_account_balance($account_number)
     }
     return 0;
 }
+
+# create a function to get the account id
+# create a function to get the account number

@@ -98,8 +98,8 @@ $stmt = $db->prepare("SELECT fname,lname from Users where id = :id");
 $stmt->execute([":id" => get_user_id()]);
 $output = $stmt->fetchAll(PDO::FETCH_ASSOC);
 foreach($output as $name):
-    $firstname = se($name, "firstname","", false);
-    $lastnamename = se($name, "lastname","", false);
+    $firstname = se($name, "fname","", false);
+    $lastname = se($name, "lname","", false);
 endforeach;
 ?>
 

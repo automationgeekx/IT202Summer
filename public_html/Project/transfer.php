@@ -39,8 +39,8 @@ $accountsList = $results;
       <input type="text" id="amount" name="amount" class="form-control" >
     </div>
     <div class="form-floating">
-        <textarea class="form-control" placeholder="Start Typing..." id="memoTxt" name="memoTxt"></textarea>
-        <label for="memoTxt">Memo</label>
+        <textarea class="form-control" placeholder="Start Typing..." id="memo" name="memo"></textarea>
+        <label for="memo">Memo</label>
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Transfer</button>
@@ -62,10 +62,10 @@ $accountsList = $results;
         $amount = se($_POST, "amount", "", false);
         $accountsource = se($_POST, "account_src", "", false);
         $accountdestination = se($_POST, "account_dest", "", false);
-        $memo = se($_POST, "memoTxt", "", false);
-        $balance = get_specific_account_balance($account_src);
-        $destination = get_id($account_dest);
-        $source = get_id($account_src);
+        $memo = se($_POST, "memo", "", false);
+        $balance = get_specific_account_balance($accountsource);
+        $destination = get_id($accountdestination);
+        $source = get_id($accountsource);
         $hasError = false;
 
 

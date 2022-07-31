@@ -26,7 +26,7 @@ function get_id($account_number)
     $stmt = $db->prepare($query);
     try
     {
-        $stmt->execute([":accnum" => $account_number]);
+        $stmt->execute([":accnumber" => $account_number]);
         $returnStatement = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($returnStatement)
         {
@@ -52,7 +52,7 @@ function get_accnum($id_num)
         $returnStatement = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($returnStatement)
         {
-            return (int)se($returnStatement, "account number", 0, false);
+            return (int)se($returnStatement, "account_number", 0, false);
         }
     }
     catch (PDOException $e)

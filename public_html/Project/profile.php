@@ -87,6 +87,20 @@ if (isset($_POST["save"])) {
         }
     }
 }
+
+?>
+<?php
+//loop to get firstname and lastname 
+$firstname = "";
+$lastname = "";
+$db = getDB();
+$stmt = $db->prepare("SELECT fname,lname from Users where id = :id");
+$stmt->execute([":id" => get_user_id()]);
+$output = $stmt->fetchAll(PDO::FETCH_ASSOC);
+foreach($output as $name):
+    $firstname = se($name, "fname","", false);
+    $lastname = se($name, "lname","", false);
+endforeach;
 ?>
 
 <?php
@@ -96,6 +110,14 @@ $username = get_username();
 <div class="container-fluid">
     <h1>Profile</h1>
     <form method="POST" onsubmit="return validate(this);">
+        <div class="mb-3">
+            <label class="form-label" for="fname">First Name</label>
+            <input class="form-control" type="text" name="fname" id="fname" value="<?php se($firstname); ?>" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="lname">Last Name</label>
+            <input class="form-control" type="text" name="lname" id="lname" value="<?php se($lastname); ?>" />
+        </div>
         <div class="mb-3">
             <label class="form-label" for="email">Email</label>
             <input class="form-control" type="email" name="email" id="email" value="<?php se($email); ?>" />
@@ -122,7 +144,14 @@ $username = get_username();
     </form>
 </div>
 
-
+<?php
+    if (isset($_POST["fname"]) && isset($_POST["lname"]))
+    {
+        $finalFname = se($_POST, "fname", "", false);
+        $finalLname = se($_POST, "lname", "", false);
+        name($finalFname, $finalLname);
+    }
+?>
 <script>
     function validate(form) {
         let pw = form.newPassword.value;

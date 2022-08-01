@@ -91,6 +91,28 @@ function get_lname($id)
     return 0;
 }
 
+function get_fname($lname)
+{
+    $query = "SELECT fname from Users WHERE lname = :l";
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    try
+    {
+        $stmt->execute([":l" => $lname]);
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($results)
+        {
+            return se($results, "fname", 0, false);
+        }
+    }
+    catch (PDOException $e)
+    {
+        error_log("Error getting last name: " . var_export($e->errorInfo, true));
+        flash("Error getting last name", "danger");
+    }
+    return 0;
+}
+
 function get_acc_digits($id_num, $digits)
 {
     $query = "SELECT account_number from Accounts WHERE user_id = :id AND account_number LIKE '%$digits'";

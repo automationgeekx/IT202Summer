@@ -90,7 +90,7 @@ $accs = [];
                 <?php foreach ($accs as $acc) : ?>
                     <tr>
                         <td>
-                        <a href="external_transfer.php?account_id=<?php echo se($acc, "id");?>&account_number=<?php echo se($acc, "account_number");?>">
+                        <a href="external_transfer.php?account_id=<?php echo se($acc, "id");?>&account_number=<?php echo se($acc, "account_number");?>&account_name=<?php echo $name;?> ">
                         <?php se($acc, "account_number"); ?></a>
                     </td>
                         <td>

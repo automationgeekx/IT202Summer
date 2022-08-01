@@ -3,6 +3,8 @@ require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
 <?php
+$accountnumber = $_GET["account_number"];
+$accountname = $_GET["account_name"];
 $user_id = get_user_id();
 $query = "SELECT account_number, id, balance from Accounts WHERE user_id = $user_id ORDER BY modified desc LIMIT 5";
 $db = getDB();
@@ -12,6 +14,23 @@ $accountsList = [];
 $stmt->execute($params);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $accountsList = $results;
+$query2 = "SELECT fname FROM Users WHERE lname = :accnum";
+$db2 = getDB();
+$params2 = null;
+$stmt2 = $db2->prepare($query2);
+try
+{
+    $stmt2->execute([":accnum" => $accountname]);
+    $results2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if($results2)
+    {
+        $accos = $results2;
+    }
+}
+catch (PDOException $e)
+{
+    flash(var_export($e->errorInfo, true), "danger");
+}
 ?>
 
 
@@ -27,12 +46,12 @@ $accountsList = $results;
       </select>
     </div>
     <div class="mb-3">
-      <label for="acc_dest" class="form-label">Destination Account</label>
-      <select id="account" name="account_dest" class="form-select">
-        <?php foreach ($accountsList as $accs) : ?>
-            <option> <?php se($accs, "account_number"); ?> </option>
-        <?php endforeach; ?>
-      </select>
+      <label for="acc_dest" class="form-label">Recipient Account</label>
+      <input type="text" id="account_dest" name="account_dest" value="<?php echo $accountnumber; ?>" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="recip_name" class="form-label">Recipients Name</label>
+      <input type="text" id="name" name="name" value="<?php echo get_fname($accountname) . " " . $accountname; ?>" class="form-control">
     </div>
     <div class="mb-3">
       <label for="deposit_amount" class="form-label">Transfer Fund Amount</label>
@@ -70,7 +89,7 @@ $accountsList = $results;
 
 
         if((strlen($memo) == 0)) {
-            $memo = $source."Made A Withdrawal";
+            $memo = get_fname(get_lname($user_id)) . " " . get_lname($user_id) . " Made A Transfer To " . get_fname($accountname) . " " . $accountname;
         }
 
         if($accountsource === $accountdestination)

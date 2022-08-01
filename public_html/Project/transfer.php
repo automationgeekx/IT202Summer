@@ -70,7 +70,7 @@ $accountsList = $results;
 
 
         if((strlen($memo) == 0)) {
-            $memo = $source."Made A Withdrawal";
+            $memo = $source." Made A Transfer";
         }
 
         if($accountsource === $accountdestination)

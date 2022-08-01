@@ -55,6 +55,7 @@ $accs = [];
             }
             else{
                 flash("Account for recipient " . $name . " with account ending in " . $accdigits . " does not exist", "danger");
+                die(header("Location: $BASE_PATH/home.php"));
             }
         }
         catch (PDOException $e)

@@ -16,7 +16,7 @@ $accountsList = $results;
 
 
 <div class="container-fluid">
-<h1>Transfer</h1>
+<h1>Internal Transfer</h1>
 <form onsubmit="return validate(this)" method="POST">
     <div class="mb-3">
       <label for="acc_src" class="form-label">Source Account</label>

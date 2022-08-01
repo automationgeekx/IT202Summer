@@ -91,24 +91,25 @@ function get_lname($id)
     return 0;
 }
 
-function get_acc_digits($digits)
+function get_acc_digits($id_num, $digits)
 {
-    $query = "SELECT account_number from Accounts WHERE SUBSTR(account_number, 9, 4) = :digits";
+    $query = "SELECT account_number from Accounts WHERE user_id = :id AND account_number LIKE '%$digits'";
     $db = getDB();
     $stmt = $db->prepare($query);
     try
     {
-        $stmt->execute([":digits" => $digits]);
-        $results = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($results)
+        $stmt->execute([":id" => $id_num]);
+        # $stmt->execute([":digits" => $digits]);
+        $returnStatement = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($returnStatement)
         {
-            return se($results, "account_number", 0, false);
+            return (int)se($returnStatement, "account_number", 0, false);
         }
     }
     catch (PDOException $e)
     {
-        error_log("Error getting last name: " . var_export($e->errorInfo, true));
-        flash("Error getting last name", "danger");
+        error_log("Error getting account number for user: " . var_export($e->errorInfo, true));
+        flash("Error getting acc num", "danger");
     }
     return 0;
 }

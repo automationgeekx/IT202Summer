@@ -5,16 +5,16 @@ $accs = [];
 ?>
 
 <div class="container-fluid">
-<h1>Find User</h1>
+<h1>Search For Recipient</h1>
 <form onsubmit="return validate(this)" method="POST">
 
     <div class="mb-3">
-      <label for="reciever_name" class="form-label">Recipients Last Name</label>
+      <label for="recipient_name" class="form-label">Recipients Last Name</label>
       <input type="text" id="name" name="name" class="form-control" >
     </div>
 
     <div class="mb-3">
-      <label for="reciever_name" class="form-label">Recipient Accounts Last 4 Digits</label>
+      <label for="recipientdigits" class="form-label">Recipient Accounts Last 4 Digits</label>
       <input type="text" id="digits" name="digits" class="form-control" >
     </div>
 
@@ -37,8 +37,9 @@ $accs = [];
         $lastName = get_lname(get_user_id());
         $name = se($_POST, "name", "", false);
         $accdigits = se($_POST, "digits", "", false);
+        $realaccDig = (int)$accdigits;
         $id = get_id_lname($name);
-        $user_account = get_acc_digits($accdigits);
+        $user_account = get_acc_digits($id, $realaccDig);
         $query = "SELECT account_number, account_type FROM Accounts WHERE user_id = $id AND account_number = $user_account";
         $db = getDB();
         $params = null;
@@ -50,9 +51,10 @@ $accs = [];
             if($results)
             {
                 $accs = $results;
+                flash("Account " . $user_account . " Found", "Success");
             }
             else{
-                flash("No accounts found", "warning");
+                flash("Account for recipient " . $name . " with account ending in " . $accdigits . " does not exist", "danger");
             }
         }
         catch (PDOException $e)
@@ -64,9 +66,9 @@ $accs = [];
         if(strcasecmp($lastName,$name) == 0)
         {
             $hasError = true;
-            flash("Cannot send to yourself. Use Internal Transfer.");
+            flash("Cannot send to yourself. Use Internal Transfer.","danger");
         }
-        elseif(!$hasError)
+        if(!$hasError)
         {
             flash("Profile Found. Please wait a moment while we take you to transfer", "Success");
         }
@@ -76,14 +78,26 @@ $accs = [];
     <h1>Account</h1>
     <table class="table">
         <thead>
-            <th>Account Number</th>
+            <th>Account Number (Click For Transfer)</th>
             <th>Account Type</th>
         </thead>
         <tbody>
             <?php if (empty($accs) || $hasError == true) : ?>
                     <tr>
-                        <td colspan="75%">Account not found</td>
+                        <td colspan="75%">Account not found. Re-enter details</td>
                     </tr>
+                    <?php else : ?>
+                <?php foreach ($accs as $acc) : ?>
+                    <tr>
+                        <td>
+                        <a href="external_transfer.php?account_id=<?php echo se($acc, "id");?>&account_number=<?php echo se($acc, "account_number");?>">
+                        <?php se($acc, "account_number"); ?></a>
+                    </td>
+                        <td>
+                            <?php se($acc, "account_type"); ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             <?php endif; ?>
         </tbody>
     </table>

@@ -90,3 +90,27 @@ function get_lname($id)
     }
     return 0;
 }
+
+function get_acc_digits($digits)
+{
+    $query = "SELECT account_number from Accounts WHERE SUBSTR(account_number, 9, 4) = :digits";
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    try
+    {
+        $stmt->execute([":digits" => $digits]);
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($results)
+        {
+            return se($results, "account_number", 0, false);
+        }
+    }
+    catch (PDOException $e)
+    {
+        error_log("Error getting last name: " . var_export($e->errorInfo, true));
+        flash("Error getting last name", "danger");
+    }
+    return 0;
+}
+
+

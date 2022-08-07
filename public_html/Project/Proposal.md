@@ -72,7 +72,7 @@
         -  [https://bg339-prod.herokuapp.com/Project/deposit.php](https://bg339-prod.herokuapp.com/Project/deposit.php)
         -  [https://bg339-prod.herokuapp.com/Project/withdraw.php](https://bg339-prod.herokuapp.com/Project/withdraw.php)
 - Milestone 3
-  - (duplicate template here for Milestone 1 features)
+  
 - Milestone 4
   - (duplicate template here for Milestone 1 features)
   - 

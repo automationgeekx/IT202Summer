@@ -26,7 +26,9 @@ $fullname = $firstname . " " . $lastname;
   <a href="deposit.php" class="list-group-item list-group-item-action">Deposit</a>
   <a href="withdraw.php" class="list-group-item list-group-item-action">Withdraw</a>
   <a href="transfer_dropdown.php" class="list-group-item list-group-item-action">Transfer</a>
-  <a href="profile.php" class="list-group-item list-group-item-action">Profile</a>
+  <a href="profile.php?id=<?php se(get_user_id()); ?>" class="list-group-item list-group-item-action">Profile</a>
+  <a href="takeoutloanOptions.php" class="list-group-item list-group-item-action">Take out a Loan</a>
+  <a href="closed.php" class="list-group-item list-group-item-action">Close Account</a>
 </div>
 
 <?php

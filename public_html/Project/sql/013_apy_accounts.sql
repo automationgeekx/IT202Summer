@@ -1,0 +1,1 @@
+ALTER TABLE `Accounts` ADD COLUMN `last_calc_apy` FLOAT default 0.0;

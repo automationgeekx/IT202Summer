@@ -15,10 +15,11 @@ if (is_logged_in(true)) {
             <label class="form-label" for="account_type">Account Type</label>
             <select id="account_type" name="account_type" class="form-select">
                 <option>Checking</option>
+                <option>Savings</option>
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="minimum_deposit">Minimum Deposit of $5 Required</label>
+            <label class="form-label" for="minimum_deposit">Minimum Deposit Required</label>
             <input class="form-control" type="text" id="deposit" name="deposit" required value="5" />
         </div>
         <div class="mb-3">
@@ -97,6 +98,10 @@ if (is_logged_in(true)) {
                             $account["id"] = $db->lastInsertId();
                             flash("Welcome! Your account was created successfully", "success");
                             makeInitDeposit($deposit, "Deposit", -1, $account["id"], "Initial Deposit when First Account Created");
+                            if($account_type == "Savings")
+                            {
+                                usersavingsAPY($account["id"]);
+                            }
                             die(header("Location: list_accounts.php"));
                         } catch (PDOException $e) {
                             flash("An error occurred creating your account", "danger");
@@ -112,6 +117,10 @@ if (is_logged_in(true)) {
                         $account["id"] = $db->lastInsertId();
                         flash("Welcome! Your account was created successfully", "success");
                         makeInitDeposit($deposit, "Deposit", -1, $account["id"], "Initial Deposit when First Account Created");
+                        if($account_type == "Savings")
+                        {
+                            usersavingsAPY($account["id"]);
+                        }
                         die(header("Location: list_accounts.php"));
                     } 
                 } catch (PDOException $e) {

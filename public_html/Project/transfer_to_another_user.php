@@ -40,7 +40,7 @@ $accs = [];
         $realaccDig = (int)$accdigits;
         $id = get_id_lname($name);
         $user_account = get_acc_digits($id, $realaccDig);
-        $query = "SELECT account_number, account_type FROM Accounts WHERE user_id = $id AND account_number = $user_account";
+        $query = "SELECT account_number, account_type, isopenedorclosed, id, balance, frozen FROM Accounts WHERE user_id = $id AND account_number = $user_account";
         $db = getDB();
         $params = null;
         $stmt = $db->prepare($query);
@@ -63,6 +63,23 @@ $accs = [];
             flash(var_export($e->errorInfo, true), "danger");
         }
 
+        $isLoanAccount = [];
+        $isNotLoanAccount = [];
+        foreach($accs as $acc):
+        {
+            if($acc["isopenedorclosed"] == 1 || $acc["frozen"] == 1)
+            {
+                if($acc["account_type"] == "Loan" || $acc["frozen"] == 1)
+                {
+                    array_push($isLoanAccount, $acc);
+                }
+                else{
+                    array_push($isNotLoanAccount, $acc);
+                }
+            }
+        }
+        endforeach;
+
         $hasError = false;
         if(strcasecmp($lastName,$name) == 0)
         {
@@ -83,12 +100,12 @@ $accs = [];
             <th>Account Type</th>
         </thead>
         <tbody>
-            <?php if (empty($accs) || $hasError == true) : ?>
+            <?php if (empty($isNotLoanAccount) || $hasError == true) : ?>
                     <tr>
                         <td colspan="75%">Account not found. Re-enter details</td>
                     </tr>
                     <?php else : ?>
-                <?php foreach ($accs as $acc) : ?>
+                <?php foreach ($isNotLoanAccount as $acc) : ?>
                     <tr>
                         <td>
                         <a href="external_transfer.php?account_id=<?php echo se($acc, "id");?>&account_number=<?php echo se($acc, "account_number");?>&account_name=<?php echo $name;?> ">

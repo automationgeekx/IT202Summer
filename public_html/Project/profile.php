@@ -90,6 +90,33 @@ if (isset($_POST["save"])) {
 
 ?>
 <?php
+$email = get_user_email();
+$username = get_username();
+$id = se($_GET, "id", -1, false);
+$userList = [];
+$bool = true;
+$checkVisibility = getV(get_user_id());
+if($id > -1)
+{
+    $bool = false;
+    $db = getDB();
+    $query = "SELECT email, username, created, fname, lname, Public from Users WHERE id = :id";
+    $stmt = $db->prepare($query);
+    try 
+    {
+        $stmt->execute([":id" => $id]);
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($results) 
+        {
+            $userList = $results;
+            $username = se($userList, "username", "", false);
+        }
+    } 
+    catch (PDOException $e) 
+    {
+        error_log("Error looking up user recipients profile: " . var_export($e->errorInfo, true));
+    }
+}
 //loop to get firstname and lastname 
 $firstname = "";
 $lastname = "";
@@ -103,13 +130,39 @@ foreach($output as $name):
 endforeach;
 ?>
 
-<?php
-$email = get_user_email();
-$username = get_username();
-?>
 <div class="container-fluid">
+    <?php if ($bool) : ?>
     <h1>Profile</h1>
     <form method="POST" onsubmit="return validate(this);">
+    <?php if($checkVisibility == 1): ?>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="checked" id="private" value="0">
+            <label class="form-check-label" for="private_label">
+                Private
+            </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="checked" id="public" value="1" checked>
+            <label class="form-check-label" for="public_label">
+                Public
+            </label>
+            </div>
+    <?php endif; ?>
+    <?php if($checkVisibility == 0): ?>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="checked" id="private" value="0" checked>
+            <label class="form-check-label" for="private_label">
+                Private
+            </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="checked" id="public" value="1">
+            <label class="form-check-label" for="public_label">
+                Public
+            </label>
+            </div>
+    <?php endif; ?>
+
         <div class="mb-3">
             <label class="form-label" for="fname">First Name</label>
             <input class="form-control" type="text" name="fname" id="fname" value="<?php se($firstname); ?>" />
@@ -142,6 +195,70 @@ $username = get_username();
         </div>
         <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
     </form>
+
+
+    <?php else: ?>
+        <h1><?php echo ("Recipients Profile"); ?> </h1>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Username
+            </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body"><?php se($userList, "username") ?></div>
+            </div>
+        </div>
+        <?php if(getV($_GET["id"]) == 1): ?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Email
+            </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body"><?php se($userList, "email") ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+        <?php if(getV($_GET["id"]) == 0): ?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Email
+            </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Unable to View. This User is Private.</div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                First and Last Name
+            </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body"> <?php se($userList, "fname") ?> <?php se($userList, "lname") ?> </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                Date <?php se($userList, "fname") ?> Joined
+            </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body"> <?php se($userList, "created") ?> </div>
+            </div>
+        </div>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?php
@@ -150,6 +267,8 @@ $username = get_username();
         $finalFname = se($_POST, "fname", "", false);
         $finalLname = se($_POST, "lname", "", false);
         name($finalFname, $finalLname);
+        $isChecked = se($_POST, "checked", "", false);
+        setV($isChecked);
     }
 ?>
 <script>

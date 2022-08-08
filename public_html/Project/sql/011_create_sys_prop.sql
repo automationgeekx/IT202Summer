@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS `System Properties` (
+    `id` INT,
+    `name` VARCHAR(100),
+    `value` FLOAT NOT NULL,
+    `modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+)

@@ -1,0 +1,1 @@
+ALTER TABLE Users ADD COLUMN `Public` TINYINT(1) default 1;

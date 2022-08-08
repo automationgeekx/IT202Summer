@@ -70,3 +70,35 @@ function makeInitDeposit($bal, $cause, $deduct = -1, $increase = -1, $details = 
         }
     }
 }
+
+function makeLoanDeposit($bal, $cause, $deduct = -1, $increase = -1, $details = "")
+{
+    if ($bal > 0) 
+    {
+        $query = "INSERT INTO Transactions (account_src, account_dest, balance_change, transaction_type, memo, expected_total) 
+            VALUES (:accsrc1, :accdest1, :balchan, :r,:m, :exptol1), (:accsrc2, :accdest2, :balchan2, :r, :m, :exptol2)";
+
+        $params[":accsrc1"] = $deduct;
+        $params[":accdest1"] = $increase;
+        $params[":r"] = $cause;
+        $params[":m"] = $details;
+        $params[":balchan"] = ($bal);
+        $params[":exptol1"] = get_specific_account_balance($deduct) + $bal;
+
+        $params[":accsrc2"] = $increase;
+        $params[":accdest2"] = $deduct;
+        $params[":balchan2"] = $bal;
+        $params[":exptol2"] = get_specific_account_balance($increase) + $bal;
+        $db = getDB();
+        $stmt = $db->prepare($query);
+        try {
+            $stmt->execute($params);
+            refresh_account_balance($deduct);
+            refresh_account_balance($increase);
+            flash("Loan Deposit Made", "Success");
+        } catch (PDOException $e) {
+            error_log(var_export($e->errorInfo, true));
+            flash("There was an error depositing money", "danger");
+        }
+    }
+}

@@ -4,7 +4,7 @@ is_logged_in(true);
 ?>
 <?php
 $user_id = get_user_id();
-$query = "SELECT account_number, id, balance from Accounts WHERE user_id = $user_id ORDER BY modified desc LIMIT 5";
+$query = "SELECT account_number, account_type, id, balance, frozen, isopenedorclosed from Accounts WHERE user_id = $user_id ORDER BY modified desc LIMIT 8";
 $db = getDB();
 $params = null;
 $stmt = $db->prepare($query);
@@ -12,6 +12,24 @@ $accountsList = [];
 $stmt->execute($params);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $accountsList = $results;
+$isLoansAccount = [];
+$isNotLoansAccount = [];
+foreach($accountsList as $acc):
+{
+    if($acc["frozen"] == 0)  
+    { 
+        if($acc["isopenedorclosed"] == 1)
+            if($acc["account_type"] == "Loan")
+            {
+                array_push($isLoansAccount, $acc);
+            }
+            else
+            {
+                array_push($isNotLoansAccount, $acc);
+            }
+    }
+}
+endforeach;
 ?>
 
 
@@ -21,7 +39,7 @@ $accountsList = $results;
     <div class="mb-3">
       <label for="acc_src" class="form-label">Source Account</label>
       <select id="account" name="account_src" class="form-select">
-        <?php foreach ($accountsList as $accs) : ?>
+        <?php foreach ($isNotLoansAccount as $accs) : ?>
             <option> <?php se($accs, "account_number"); ?> </option>
         <?php endforeach; ?>
       </select>
@@ -29,7 +47,7 @@ $accountsList = $results;
     <div class="mb-3">
       <label for="acc_dest" class="form-label">Destination Account</label>
       <select id="account" name="account_dest" class="form-select">
-        <?php foreach ($accountsList as $accs) : ?>
+        <?php foreach ($isNotLoansAccount as $accs) : ?>
             <option> <?php se($accs, "account_number"); ?> </option>
         <?php endforeach; ?>
       </select>
